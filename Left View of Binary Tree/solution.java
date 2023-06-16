@@ -1,3 +1,37 @@
+
+class Tree
+{
+    //Function to return list containing elements of left view of binary tree.
+    ArrayList<Integer> leftView(Node root)
+    {
+      ArrayList<Integer> ds = new ArrayList<>();
+      
+      fun(root,0,ds);
+      return ds;
+      
+      //preorder traversal
+    }
+    static void fun(Node root, int level , ArrayList<Integer> ds){
+        
+        if(root==null){
+            return;
+        }
+        
+        if(level==ds.size()){
+            ds.add(root.data);
+        }
+        
+        fun(root.left,level+1,ds);
+        fun(root.right,level+1,ds);
+    }
+}
+
+
+
+//NOT RECOMMMENDED VERY LENGTHY
+
+
+/* 
 class Tree
 {
     //Function to return list containing elements of left view of binary tree.
@@ -64,4 +98,4 @@ class Tree
       
       return list;
     }
-}
+} */
