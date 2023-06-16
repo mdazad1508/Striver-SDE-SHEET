@@ -27,6 +27,50 @@ class Tree
 }
 
 
+//level order traversal 
+
+class Tree
+{
+    //Function to return list containing elements of left view of binary tree.
+    ArrayList<Integer> leftView(Node root)
+    {
+      ArrayList<Integer> ds = new ArrayList<>();
+      
+      if(root==null) return ds;
+      fun(root,ds);
+      return ds;
+      
+      //level order traversal
+    }
+    static void fun(Node root , ArrayList<Integer> ds){
+        
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        
+        while(!q.isEmpty()){
+            int count = q.size();
+            
+            for(int i=0;i<count;i++){
+                
+               Node curr = q.poll();
+               if(i==0){
+                   ds.add(curr.data);
+               }
+                
+                if(curr.left != null){
+                    q.add(curr.left);
+                }
+                
+                if(curr.right != null){
+                    q.add(curr.right);
+                }
+            }
+        }
+        
+        
+    }
+
+
 
 //NOT RECOMMMENDED VERY LENGTHY
 

@@ -42,3 +42,51 @@ class Solution {
 
     }
 }
+
+
+
+
+
+
+//level order traversal 
+
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        
+        List<Integer> ds = new ArrayList<>();
+        if(root==null) return ds;
+        fun(root,ds);
+        return ds;
+    }
+
+    static void fun(TreeNode root, List<Integer> ds){
+           
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        
+        while(!q.isEmpty()){
+            int count = q.size();
+            
+            for(int i=0;i<count;i++){
+                
+               TreeNode curr = q.poll();
+               if(i==0){
+                   ds.add(curr.val);
+               }
+               //first add righ then left 
+               // or you can do , add when i==count -1
+                if(curr.right != null){
+                    q.add(curr.right);
+                }
+                
+                if(curr.left != null){
+                    q.add(curr.left);
+                }
+                
+                
+            }
+        }
+        
+
+    }
+}
