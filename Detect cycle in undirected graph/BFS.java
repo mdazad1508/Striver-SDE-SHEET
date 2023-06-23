@@ -46,7 +46,7 @@ class Solution {
                         visited[neighbour] = true;
                         q.add(new Pair(neighbour,node));
              }else {
-                    if(neighbour != parent) return true;
+                  if(neighbour != parent) return true;
             }
             
             }   
