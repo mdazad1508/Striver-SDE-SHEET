@@ -11,11 +11,38 @@ class Node{
     }
 }
 
+class DLL{
+    Node head;
+    Node tail;
+
+    DLL(){
+        head = new Node(-10,-10);
+        tail = new Node(-10,-10);
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    void addNextToHead(Node curr){
+            Node headNext = head.next;
+            head.next = curr;
+            curr.next = headNext;
+            curr.prev = head;
+            headNext.prev = curr;
+    }
+
+    void deleteNode(Node curr){
+            Node currNext = curr.next;
+            Node currPrev = curr.prev;
+            currPrev.next = currNext;
+            currNext.prev = currPrev;
+    }
+
+}
+
 class LRUCache {
 
     HashMap<Integer,Node> hmap;
-    Node head;
-    Node tail;
+    DLL list;
     int size;
     int cap ;
     
@@ -23,10 +50,7 @@ class LRUCache {
     public LRUCache(int capacity) {
 
         hmap = new HashMap<>(capacity);
-        head = new Node(-10,-10);
-        tail = new Node(-10,-10);
-        head.next = tail;
-        tail.prev = head;
+        list = new DLL();
         size =0;
         cap = capacity;
         
@@ -40,18 +64,10 @@ class LRUCache {
             //move this node to front of head;
             
             //deleting from that place
-            Node currNext = curr.next;
-            Node currPrev = curr.prev;
-            currPrev.next = currNext;
-            currNext.prev = currPrev;
+            list.deleteNode(curr);
 
             //putting in form of head;
-
-            Node headNext = head.next;
-            head.next = curr;
-            curr.next = headNext;
-            curr.prev = head;
-            headNext.prev = curr;
+            list.addNextToHead(curr);
 
             return curr.val;
 
@@ -62,52 +78,36 @@ class LRUCache {
     }
     
     public void put(int key, int value) {
-        
-        if(size == cap && !hmap.containsKey(key)){
-
-            //Node before tail is LRU, delete it 
-            Node del = tail.prev;
-            Node delPrev = del.prev;
-            delPrev.next = tail;
-            tail.prev = delPrev;
-
-            //also delete form hasmap
-
-            hmap.remove(del.key);
-            size--;
-
-           
-        }
-
+       
        if(hmap.containsKey(key)){
            //update the value of node ;
            Node curr = hmap.get(key);
            curr.val = value;
 
             //deleting from that place
-            Node currNext = curr.next;
-            Node currPrev = curr.prev;
-            currPrev.next = currNext;
-            currNext.prev = currPrev;
+            list.deleteNode(curr);
 
             //putting in form of head;
+            list.addNextToHead(curr);
 
-            Node headNext = head.next;
-            head.next = curr;
-            curr.next = headNext;
-            curr.prev = head;
-            headNext.prev = curr;
        }else{
+            
+        if(size == cap){
+
+            //Node before tail is LRU, delete it 
+            Node del = list.tail.prev;
+            list.deleteNode(del);
+            //also delete form hasmap
+
+            hmap.remove(del.key);
+            size--;
+   
+        }
 
            Node newNode = new Node(key,value);
+
            //put it to the next of head;
-           
-           
-            Node headNext = head.next;
-            head.next = newNode;
-            newNode.next = headNext;
-            newNode.prev = head;
-            headNext.prev = newNode;
+            list.addNextToHead(newNode);
 
             hmap.put(key,newNode);
             size++;
